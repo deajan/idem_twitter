@@ -7,9 +7,7 @@ import logging
 from idem_twitter.config import database_url
 
 
-# TODO: Replace with database_url
-sql_url = 'mysql://localhost:3306'
-engine = create_engine("sqlite:///:memory:")
+engine = create_engine(database_url)
 
 logger = logging.getLogger()
 
