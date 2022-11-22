@@ -1,0 +1,16 @@
+[Unit]
+Description=Basic REST server implementation of twitter
+After=local-fs.target network-online.target
+Requires=local-fs.target
+Wants=network-online.target multi-user.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /opt/app/server.py
+WorkingDirectory=/opt/app
+SuccessExitStatus=0
+Restart=on-failure
+RestartSec=180s
+
+[Install]
+WantedBy=multi-user.target

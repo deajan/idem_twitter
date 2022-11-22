@@ -1,0 +1,7 @@
+sqlalchemy_mixins
+fastapi
+fastapi-offline>=1.5.0
+sqlmodel>=0.0.8
+uvicorn
+pydantic
+
