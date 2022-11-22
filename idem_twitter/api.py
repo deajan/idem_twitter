@@ -26,7 +26,7 @@ models.ActiveRecordBase.set_session(database.get_session())
 
 
 @app.get("/")
-async def root():
+async def api_root():
     return {"tweets": len(crud.tweet_get())}
 
 
@@ -66,7 +66,7 @@ async def delete_tweet(id: int):
 
 
 @app.get("/front", response_class=HTMLResponse)
-async def front():
+async def super_frontend_with_eye_candy():
     number_of_tweets = len(crud.tweet_get())
     css_class = 'bg-primary' if number_of_tweets else 'bg-warning'
     tweets = ""
@@ -82,7 +82,7 @@ async def front():
         </head>
         <body>
         <div class="container p-2">
-        <img src="https://pixy.org/src/443/4434039.png" width="15%">
+        <a href="/docs" target="_blank"><img src="https://pixy.org/src/443/4434039.png" width="15%"></a>
         <h1 class="bg-success p-4">Welcome to our mighty twitter v2.</h1>
         <h2 class="{} p-4">We have {} tweets currently.</h2>
         {}
