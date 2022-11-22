@@ -5,6 +5,7 @@
 from typing import Optional
 from sqlalchemy_mixins import ActiveRecordMixin
 from sqlmodel import Field, SQLModel
+from pydantic import constr
 
 
 # In order for Mixins to work with sqlmodel, we need to patch SQLModel main.py at line 322 by adding a default None value for __config__
@@ -23,7 +24,7 @@ class User(ActiveRecordBase, table=True):
 
 
 class TweetBase(ActiveRecordBase):
-    text: str
+    text: constr(max_length=160)
     user_id: Optional[int] = Field(default=None, foreign_key="user.id")
 
 
