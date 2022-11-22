@@ -27,7 +27,10 @@ models.ActiveRecordBase.set_session(database.get_session())
 
 @app.get("/")
 async def api_root():
-    return {"tweets": len(crud.tweet_get())}
+    return {
+        "app": __appname__,
+        "tweets": len(crud.tweet_get())
+        }
 
 
 @app.get("/tweets", response_model=List[models.Tweet])
