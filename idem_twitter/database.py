@@ -4,15 +4,15 @@
 from sqlmodel import SQLModel, Session, create_engine
 from contextlib import contextmanager
 import logging
-from idem_twitter.config import database_url
+from idem_twitter.config import database_url, _DATABASE_DEBUG, _DATABASE_AUTOCOMMIT
 
 
-engine = create_engine(database_url)
+engine = create_engine(database_url, echo=_DATABASE_DEBUG, pool_pre_ping=True)
 
 logger = logging.getLogger()
 
 def get_session():
-    session = Session(engine)
+    session = Session(engine, autocommit=_DATABASE_AUTOCOMMIT)
     return session
 
 
