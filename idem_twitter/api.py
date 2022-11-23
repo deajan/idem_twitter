@@ -6,7 +6,7 @@ __author__ = "Alan Smithee"
 __build__ = "2022112201"
 __version__ = "1.0-beta"
 
-from typing import List
+from typing import List, Optional
 import logging
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import HTMLResponse
@@ -34,16 +34,25 @@ async def api_root():
 
 
 @app.get("/tweets", response_model=List[models.Tweet])
-@app.get("/tweet/{id}", response_model=models.Tweet)
-async def get_tweets(id: int = None):
+@app.get("/tweet/{id_tweet}", response_model=Optional[models.Tweet])
+async def get_tweets(id_tweet: int = None):
     try:
-        return crud.tweet_get(id)
-    except Exception as exc:
-            logger.debug("Cannot list tweets: {}".format(exc), exc_info=True)
+        result = crud.tweet_get(id_tweet)
+        if not result:
             raise HTTPException(
-                status_code=400,
-                detail="Cannot list tweets: {}".format(exc),
+                status_code=404,
+                detail="Not found"
             )
+        return result
+    except HTTPException:
+        raise
+    except Exception as exc:
+        logger.debug("Cannot list tweets: {}".format(exc), exc_info=True)
+        raise HTTPException(
+            status_code=400,
+            detail="Cannot list tweets: {}".format(exc),
+        )
+
 
 @app.post("/tweet", response_model=models.Tweet, status_code=201)
 async def create_tweet(tweet: models.TweetCreate):
@@ -55,6 +64,7 @@ async def create_tweet(tweet: models.TweetCreate):
                 status_code=400,
                 detail="Cannot create tweets: {}".format(exc),
             )
+
 
 @app.delete("/tweet/{id}")
 async def delete_tweet(id: int):
